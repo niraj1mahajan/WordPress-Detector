@@ -12,12 +12,13 @@ To use WordPress Detector, you need to have Python 3 installed on your system. Y
 
 python wordpress_detector.py `<filename>`
 
-
 Replace `<filename>` with the name of the file that contains the list of domains you want to check. Each domain should be on a separate line in the file.
 
 For example, if your file is called `domainlist.txt`, you would run the script with the following command:
 
 python wordpress_detector.py domainlist.txt
+
+![Image description](https://github.com/niraj1mahajan/WordPress-Detector/blob/main/domainlist.png?raw=true)
 
 4. The script will output the list of domains that are running WordPress to the console, and also write them to a file called `wordpress_domains.txt` in the same directory as the script.
 
