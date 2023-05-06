@@ -1,4 +1,7 @@
 # WordPress Detector
+<p align="center">
+  <img src="https://github.com/niraj1mahajan/WordPress-Detector/blob/main/Detector.png?raw=true" alt="Image description">
+</p>
 
 WordPress Detector is a Python script that checks whether a list of domains are running WordPress or not. It does this by sending a HEAD request to the root URL of each domain, and checking for the presence of certain strings in the response body that indicate that the website is running WordPress.
 
