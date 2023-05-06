@@ -16,12 +16,17 @@ def is_wordpress(url):
 # read the input file and check each domain
 def check_domains(filename):
     with open(filename, "r") as file:
+        wordpress_domains = []
         for line in file:
             url = line.strip()
             if is_wordpress(url):
                 print(colored(url, "green") + " is using WordPress")
+                wordpress_domains.append(url)
             else:
                 print(colored(url, "red") + " is not using WordPress")
+        with open("wordpress_domains.txt", "w") as output_file:
+            for domain in wordpress_domains:
+                output_file.write(domain + "\n")
 
 if __name__ == "__main__":
     print("WordPress Detector Tool")
