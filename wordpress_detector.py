@@ -1,45 +1,30 @@
-import sys
 import requests
-from termcolor import colored
+import sys
+
 
 def check_domains(filename):
-    try:
-        with open(filename, "r") as file:
-            domains = file.read().splitlines()
-    except FileNotFoundError:
-        print(colored("Error: File not found", "red"))
-        return
-
     wordpress_domains = []
-    non_wordpress_domains = []
-
-    for domain in domains:
-        try:
-            response = requests.get(f"http://{domain}")
-        except (requests.exceptions.Timeout, requests.exceptions.ConnectionError):
-            print(colored(f"Error: Unable to connect to {domain}", "red"))
-            continue
-
-        if "wp-content" in response.text:
-            wordpress_domains.append(domain)
-            print(colored(f"{domain} is using WordPress", "green"))
-        else:
-            non_wordpress_domains.append(domain)
-            print(colored(f"{domain} is not using WordPress", "red"))
-
+    with open(filename, "r") as file:
+        domains = file.read().splitlines()
+        total_domains = len(domains)
+        for i, domain in enumerate(domains):
+            try:
+                response = requests.get(f"http://{domain}")
+                if "wp-content" in response.text:
+                    wordpress_domains.append(domain)
+                    print(f"\033[92m{i+1}/{total_domains}: {domain} is using WordPress\033[0m")
+                else:
+                    print(f"\033[91m{i+1}/{total_domains}: {domain} is not using WordPress\033[0m")
+            except requests.exceptions.RequestException:
+                print(f"\033[91m{i+1}/{total_domains}: Unable to connect to {domain}\033[0m")
     with open("wordpress_domains.txt", "w") as file:
         file.write("\n".join(wordpress_domains))
 
-    print(colored(f"Total domains checked: {len(domains)}", "blue"))
-    print(colored(f"WordPress sites found: {len(wordpress_domains)}", "green"))
-    print(colored(f"Non-WordPress sites found: {len(non_wordpress_domains)}", "red"))
 
 if __name__ == "__main__":
-    print(colored("WordPress Detector Tool", "yellow"))
-
+    print("WordPress Detector Tool")
     if len(sys.argv) < 2:
-        print(colored("Error: Please specify an input file", "red"))
-        print(colored("Usage: python wordpress_detector.py <filename>", "yellow"))
-    else:
-        filename = sys.argv[1]
-        check_domains(filename)
+        print("Usage: python wordpress_detector.py [filename]")
+        sys.exit(1)
+    filename = sys.argv[1]
+    check_domains(filename)
